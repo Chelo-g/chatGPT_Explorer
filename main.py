@@ -3,6 +3,15 @@ import json
 import os
 import PySimpleGUI as sg
 
+SYSTEM_CHOICES = [
+    "指定しない",
+    "誤字脱字チェック",
+    "VBAコード作成",
+    "Pythonコード作成",
+    "リファクタリング",
+    "英語に翻訳"
+]
+
 
 # その他の関数定義
 def save_chat_history(chat):
@@ -34,8 +43,8 @@ def modify_chat(chat, index, new_content):
 
 
 def update_output(chat, window):
-    updated_chat = "\n".join([f"{i}: <{msg['role']}> {msg['content']}\n{'-' * 80}" if msg[
-                                                                                          'role'] == 'assistant' else f"{i}: <{msg['role']}> {msg['content']}"
+    updated_chat = "\n".join([f"{i}: <{msg['role']}> \n{msg['content']}\n{'-' * 80}" if msg[
+                                                                                            'role'] == 'assistant' else f"{i}: <{msg['role']}>\n {msg['content']}"
                               for i, msg in enumerate(chat)])
     window["output"].update(updated_chat + "\n")
 
@@ -54,6 +63,9 @@ def calculate_cost(model, tokens):
 
 def send_message(values, chat, total_tokens, window):
     user_input = values["content"] if "content" in values else values["input"].rstrip()
+    if len(chat) == 0 and values["system_combo"] != '指定しない':
+        selected_system_message = values["system_combo"]
+        chat.append({"role": "system", "content": selected_system_message})
     chat.append({"role": "user", "content": user_input})
     model = values["model"]
 
@@ -110,6 +122,7 @@ def handle_modify_event(values, chat, total_tokens, window):
 
 
 def main():
+    sg.theme('DarkGray11')
     openai.api_key = os.getenv("chatGPT")
     total_tokens = 0
     current_tokens = 0
@@ -117,6 +130,9 @@ def main():
     # PySimpleGUIのレイアウト
     layout = [
         [sg.Multiline("ここに入力してください\n", key="input", size=(80, 5))],
+        [sg.Text("依頼内容:"),
+         sg.Combo(SYSTEM_CHOICES, size=(30, len(SYSTEM_CHOICES)), key="system_combo", default_value="指定しない",
+                  enable_events=True)],
         [sg.Text("モデル："),
          sg.Combo(["gpt-3.5-turbo", "gpt-4"], key="model", default_value="gpt-3.5-turbo", readonly=True),
          sg.Button("送信"), sg.Button("新しい会話"), sg.Button("終了")],
@@ -130,7 +146,7 @@ def main():
         [sg.Multiline("", key="output", size=(80, 20), disabled=True, autoscroll=True)]
     ]
 
-    window = sg.Window("ChatGPT", layout)
+    window = sg.Window("chatGPT Wizard", layout)
     chat = []
 
     while True:

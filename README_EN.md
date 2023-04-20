@@ -1,4 +1,4 @@
-# ChatGPT Explorer
+# ChatGPT Wizard
 ![ss](ss.png)
 
 A tool for using ChatGPT with Python through the API.
@@ -18,6 +18,17 @@ If you are not familiar with environment variables, you can directly insert the 
 
     openai.api_key = os.getenv("chatGPT")
 ## How to Use
+### Request Details
+You can select what you want to request. 
+The purpose is to omit the prompt sentence. 
+You can customize the following list by changing it:
+
+    SYSTEM_CHOICES =["Not specified",
+        "Spelling and grammar check",
+        "Creating VBA code",
+        "Creating Python code",
+        "Refactoring",
+        "Translation into English"]   
 ### Chat
 Enter the conversation content in the upper box and press "Send"
 ### Edit
