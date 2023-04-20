@@ -16,7 +16,7 @@ https://platform.openai.com/docs/libraries
 The API key is obtained from the environment variable as follows:
 If you are not familiar with environment variables, you can directly insert the API key, and it will still work.
 
-    openai.api_key = os.getenv("chatGPT")
+    API_KEY = os.getenv("chatGPT")
 ## How to Use
 ### Request Details
 You can select what you want to request. 

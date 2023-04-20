@@ -16,7 +16,7 @@ https://platform.openai.com/docs/libraries
 API keyは下記のように、環境変数から行っています  
 環境変数周りがよくわからなければ、APIkeyをそのまま入れても動きます
 
-    openai.api_key = os.getenv("chatGPT")
+    API_KEY = os.getenv("chatGPT")
 ## 使い方
 ### 依頼内容
 どういった事柄を依頼したいのか選択できます。  

@@ -3,6 +3,11 @@ import json
 import os
 import PySimpleGUI as sg
 
+# 環境変数で以下を登録、もしくはAPIKEYに書き換えてください
+# 変数 chatGPT
+# 値 https://platform.openai.com/にて取得したAPI KEY
+API_KEY = os.getenv("chatGPT")
+
 SYSTEM_CHOICES = [
     "指定しない",
     "誤字脱字チェック",
@@ -123,7 +128,7 @@ def handle_modify_event(values, chat, total_tokens, window):
 
 def main():
     sg.theme('DarkGray11')
-    openai.api_key = os.getenv("chatGPT")
+    openai.api_key = API_KEY
     total_tokens = 0
     current_tokens = 0
 
